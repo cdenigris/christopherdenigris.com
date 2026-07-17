@@ -66,6 +66,23 @@
   .nav-call:hover { background: #276a4c; }
   @media (max-width: 760px) { .nav-links { display: none; } }
 
+  /* Mobile hamburger menu */
+  .hamburger {
+    display: none; background: none; border: 2px solid var(--line); border-radius: 8px;
+    padding: 9px 13px; cursor: pointer; font-size: 0.95rem; font-weight: 700; font-family: "Nunito", sans-serif; line-height: 1; color: var(--navy);
+  }
+  @media (max-width: 760px) { .hamburger { display: block; } }
+  .mobile-menu {
+    display: none; background: #fff; border-bottom: 1px solid var(--line);
+    box-shadow: 0 10px 24px rgba(30,58,95,0.10);
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu a {
+    display: block; padding: 16px 22px; font-size: 1.15rem; font-weight: 700;
+    color: var(--navy); text-decoration: none; border-top: 1px solid var(--line);
+  }
+  .mobile-menu a:active { background: var(--blue-light); }
+
   /* ---------- Hero with repair meter ---------- */
   header { padding: 60px 0 70px; background: linear-gradient(180deg, #eef4fb 0%, var(--bg) 100%); }
   .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
@@ -280,7 +297,18 @@
       <a href="#builds">PC Builds</a>
       <a href="#pricing">Pricing</a>
     </div>
-    <a href="tel:+16313752730" class="nav-call">📞 Call Us</a>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <a href="tel:+16313752730" class="nav-call">📞 Call Us</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#checker">🔍 What's Wrong With Mine?</a>
+    <a href="#services">🛠️ What We Fix</a>
+    <a href="#builds">🖥️ Custom PC Builds</a>
+    <a href="#pricing">💵 Pricing</a>
+    <a href="#how">👍 How It Works</a>
+    <a href="#contact">📞 Contact Us</a>
   </div>
 </nav>
 
@@ -557,6 +585,20 @@
 </footer>
 
 <script>
+  /* ---------- Mobile menu ---------- */
+  const burger = document.getElementById('hamburger');
+  const mMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    const open = mMenu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+    burger.textContent = open ? '✕ Close' : '☰ Menu';
+  });
+  mMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mMenu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.textContent = '☰ Menu';
+  }));
+
   /* ---------- Hero repair meter animation ---------- */
   const scenarios = [
     { device: '💻', problem: 'Running slow...' },
