@@ -32,7 +32,7 @@
   .nav-links{display:flex;gap:24px}
   .nav-links a{color:var(--light);text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
   .nav-links a:hover,.nav-links a:focus{opacity:1;color:var(--gold-soft)}
-  .nav-burger{display:none;background:none;border:0;cursor:pointer;padding:12px;margin:-12px;position:relative;align-items:center;gap:10px}
+  .nav-burger{display:none;background:none;border:0;-webkit-appearance:none;appearance:none;cursor:pointer;flex:none;padding:10px 0 10px 12px;margin:0;position:relative;align-items:center;gap:10px}
   .nav-burger .burger-label{font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
   .burger-lines{display:block}
   .burger-lines span{display:block;width:26px;height:2px;background:var(--gold);margin:6px 0;transition:transform .3s ease,opacity .3s ease}
@@ -56,7 +56,7 @@
   .mobile-menu.open a:nth-child(8){transition-delay:.34s}
   body.menu-locked{overflow:hidden}
   @media (prefers-reduced-motion:reduce){.mobile-menu,.mobile-menu a,.mobile-menu::before,.nav-burger span{transition:none!important}}
-  @media(max-width:760px){.nav-links{display:none}.nav-burger{display:flex}}
+  @media(max-width:760px){html,body{overflow-x:hidden}nav{padding-left:20px;padding-right:20px}.nav-links{display:none}.nav-burger{display:flex}}
 
   /* ---------- HERO with dawn artwork ---------- */
   .hero{min-height:100svh;position:relative;overflow:hidden;color:var(--white);
