@@ -32,7 +32,31 @@
   .nav-links{display:flex;gap:24px}
   .nav-links a{color:var(--light);text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
   .nav-links a:hover,.nav-links a:focus{opacity:1;color:var(--gold-soft)}
-  @media(max-width:760px){.nav-links{display:none}}
+  .nav-burger{display:none;background:none;border:0;cursor:pointer;padding:12px;margin:-12px;position:relative;align-items:center;gap:10px}
+  .nav-burger .burger-label{font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+  .burger-lines{display:block}
+  .burger-lines span{display:block;width:26px;height:2px;background:var(--gold);margin:6px 0;transition:transform .3s ease,opacity .3s ease}
+  .nav-burger[aria-expanded="true"] .burger-lines span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+  .nav-burger[aria-expanded="true"] .burger-lines span:nth-child(2){opacity:0}
+  .nav-burger[aria-expanded="true"] .burger-lines span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+  .mobile-menu{position:fixed;inset:0;z-index:85;background:linear-gradient(180deg,rgba(12,30,48,.985) 0%,rgba(18,41,63,.985) 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:opacity .32s ease,visibility .32s ease}
+  .mobile-menu.open{opacity:1;visibility:visible}
+  .mobile-menu::before{content:"";width:52px;height:2px;background:var(--gold);margin-bottom:26px;opacity:0;transition:opacity .4s ease .1s}
+  .mobile-menu.open::before{opacity:1}
+  .mobile-menu a{font-family:var(--serif);font-weight:600;font-size:clamp(1.35rem,5.5vw,1.7rem);color:var(--light);text-decoration:none;padding:9px 20px;letter-spacing:.03em;opacity:0;transform:translateY(14px);transition:opacity .35s ease,transform .35s ease,color .2s ease}
+  .mobile-menu.open a{opacity:1;transform:none}
+  .mobile-menu a:hover,.mobile-menu a:focus{color:var(--gold-soft)}
+  .mobile-menu.open a:nth-child(1){transition-delay:.06s}
+  .mobile-menu.open a:nth-child(2){transition-delay:.1s}
+  .mobile-menu.open a:nth-child(3){transition-delay:.14s}
+  .mobile-menu.open a:nth-child(4){transition-delay:.18s}
+  .mobile-menu.open a:nth-child(5){transition-delay:.22s}
+  .mobile-menu.open a:nth-child(6){transition-delay:.26s}
+  .mobile-menu.open a:nth-child(7){transition-delay:.3s}
+  .mobile-menu.open a:nth-child(8){transition-delay:.34s}
+  body.menu-locked{overflow:hidden}
+  @media (prefers-reduced-motion:reduce){.mobile-menu,.mobile-menu a,.mobile-menu::before,.nav-burger span{transition:none!important}}
+  @media(max-width:760px){.nav-links{display:none}.nav-burger{display:flex}}
 
   /* ---------- HERO with dawn artwork ---------- */
   .hero{min-height:100svh;position:relative;overflow:hidden;color:var(--white);
@@ -194,7 +218,22 @@
     <a href="#credentials">Credentials</a>
     <a href="#contact">Contact</a>
   </div>
+  <button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+    <span class="burger-label">Menu</span>
+    <span class="burger-lines"><span></span><span></span><span></span></span>
+  </button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about">About</a>
+  <a href="#record">Record</a>
+  <a href="#leadership">The Classroom</a>
+  <a href="#journey">Journey</a>
+  <a href="#samples">Samples</a>
+  <a href="#room">In the Room</a>
+  <a href="#credentials">Credentials</a>
+  <a href="#contact">Contact</a>
+</div>
 
 <!-- ============ HERO — dawn over the schoolhouse ============ -->
 <header class="hero" id="top">
@@ -615,6 +654,23 @@
 </footer>
 
 <script>
+/* ---------- mobile menu ---------- */
+(function(){
+  var burger=document.getElementById('navBurger'),menu=document.getElementById('mobileMenu');
+  if(!burger||!menu)return;
+  function setOpen(o){
+    burger.setAttribute('aria-expanded',o?'true':'false');
+    burger.setAttribute('aria-label',o?'Close menu':'Open menu');
+    var lbl=burger.querySelector('.burger-label');if(lbl)lbl.textContent=o?'Close':'Menu';
+    menu.classList.toggle('open',o);
+    document.body.classList.toggle('menu-locked',o);
+  }
+  burger.addEventListener('click',function(){setOpen(burger.getAttribute('aria-expanded')!=='true');});
+  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){setOpen(false);});});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open')){setOpen(false);burger.focus();}});
+  window.addEventListener('resize',function(){if(window.innerWidth>760&&menu.classList.contains('open'))setOpen(false);});
+})();
+
   const nav = document.getElementById('nav');
   addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), {passive:true});
   nav.classList.toggle('scrolled', scrollY > 40);
